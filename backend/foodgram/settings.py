@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'api.apps.ApiConfig',
     'rest_framework',
-    'colorfield',
 ]
 
 MIDDLEWARE = [

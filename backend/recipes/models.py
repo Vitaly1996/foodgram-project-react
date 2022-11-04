@@ -9,7 +9,7 @@ User = get_user_model()
 
 class Tag(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    color = fields.ColorField(max_length=7, unique=True)
+    color = fields.CharField(max_length=7, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
 
     class Meta:
@@ -37,7 +37,7 @@ class Ingredient(models.Model):
 class Recipe(models.Model):
     name = models.CharField(max_length=50)
     text = models.TextField()
-    image = models.ImageField(upload_to="photos/%Y/%m/%d/", blank=True)
+    image = models.ImageField(upload_to='recipes', blank=True)
     cooking_time = models.DurationField()
     tags = models.ManyToManyField(Tag)
     author = models.ForeignKey(

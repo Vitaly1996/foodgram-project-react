@@ -8,3 +8,11 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
         fields = ('id', 'name', 'measurement_unit')
         lookup_field = 'name'
+
+
+class TagSerializer(serializers.ModelSerializer):
+    "Сериализатор для модели Tag только для чтения данных"
+    class Meta:
+        model = Tag
+        fields = ('id', 'name', 'color', 'slug')
+
