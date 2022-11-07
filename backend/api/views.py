@@ -14,3 +14,10 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     """Вьюсет для модели Tag.Только читает данные. """
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+
+
+class RecipeViewSet(viewsets.ModelViewSet):
+    """Вьюсет для модели Recipe и для чтения и для записи. """
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    http_method_names = ('get', 'post', 'patch', 'delete')

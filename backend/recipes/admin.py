@@ -17,6 +17,12 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'text', 'image', 'cooking_time', 'author', 'is_favorited', 'is_in_shopping_cart',)
+    list_display = ('name', 'text', 'image', 'cooking_time', 'author',)
     list_filter = ('author', 'tags',)
+    empty_value_display = '-пусто-'
+
+
+@admin.register(IngredientRecipe)
+class IngredientRecipeAdmin(admin.ModelAdmin):
+    list_display = ('ingredient', 'amount',)
     empty_value_display = '-пусто-'
