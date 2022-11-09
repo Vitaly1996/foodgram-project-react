@@ -1,0 +1,113 @@
+from django.contrib.auth import get_user_model
+from django.db import models
+from colorfield import fields
+
+from foodgram.settings import MAX_LENGTH
+
+User = get_user_model()
+
+
+class Tag(models.Model):
+    name = models.CharField(
+        verbose_name='Название',
+        max_length=200,
+        unique=True
+    )
+    color = fields.CharField(
+        verbose_name='Цвет',
+        max_length=7,
+        unique=True
+    )
+    slug = models.SlugField(
+        verbose_name='Слаг',
+        max_length=200,
+        unique=True
+    )
+
+    class Meta:
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
+
+    def __str__(self)-> str:
+        return self.name[:MAX_LENGTH]
+
+
+class Ingredient(models.Model):
+    name = models.CharField(
+        verbose_name='Название',
+        max_length=200
+    )
+    measurement_unit = models.CharField(
+        verbose_name='Единицы измерения',
+        max_length=200
+        )
+
+    class Meta:
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
+
+    def __str__(self)-> str:
+        return self.name[:MAX_LENGTH]
+
+
+class Recipe(models.Model):
+    name = models.CharField(
+        verbose_name='Название',
+        max_length=50
+    )
+    text = models.TextField(
+        verbose_name='Описание'
+    )
+    image = models.ImageField(
+        verbose_name='Изображение',
+        upload_to='images/',
+        null=True,
+        default=None
+    )
+    cooking_time = models.PositiveSmallIntegerField(
+        verbose_name='Время приготовления в минутах'
+    )
+    tags = models.ManyToManyField(
+        Tag,
+        verbose_name='Теги'
+    )
+    author = models.ForeignKey(
+        User,
+        verbose_name='Автор',
+        on_delete=models.CASCADE,
+        related_name='recipes_author'
+    )
+    ingredients = models.ManyToManyField(
+        "IngredientRecipe",
+        verbose_name='Ингредиенты'
+    )
+
+    class Meta:
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
+
+    def __str__(self)-> str:
+        return self.name[:MAX_LENGTH]
+
+
+class IngredientRecipe(models.Model):
+    ingredient = models.ForeignKey(
+        Ingredient,
+        verbose_name='Ингредиенты',
+        on_delete=models.CASCADE
+    )
+    amount = models.IntegerField(
+        verbose_name='Количество ингредиента'
+    )
+
+    class Meta:
+        verbose_name = 'Ингредиент в рецепте'
+        verbose_name_plural = 'Ингредиенты в рецепте'
+
+
+class Follow(models.Model):
+    pass
+
+
+
+
