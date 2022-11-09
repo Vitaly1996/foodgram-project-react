@@ -94,6 +94,11 @@ REST_FRAMEWORK = {
 
 }
 
+DJOSER = {
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {},
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
