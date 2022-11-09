@@ -89,14 +89,16 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 10,
 
 }
 
 DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
-    'SERIALIZERS': {},
+    'SERIALIZERS': {
+        'user': 'users.serializers.UserSerializer',
+    },
 }
 
 
@@ -130,3 +132,4 @@ REST_FRAMEWORK = {
             'rest_framework.authentication.TokenAuthentication',)
 }
 AUTH_USER_MODEL = 'users.User'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'

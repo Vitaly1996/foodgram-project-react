@@ -17,9 +17,10 @@ class User(AbstractUser):
         verbose_name_plural = 'Пользователи'
         # constraints = [
         #     models.UniqueConstraint(
-        #         fields=['username', 'email'],
+        #         fields=['email'],
         #         name='unique_username_email'
         #     )
+        # ]
 
     def __str__(self):
         return self.email

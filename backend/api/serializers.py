@@ -56,6 +56,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     def update(self):
         pass
 
+
     def get_is_favorited(self, obj):
         return False
 
