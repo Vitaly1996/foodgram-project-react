@@ -7,6 +7,7 @@ from .managers import CustomUserManager
 class User(AbstractUser):
     username = None
     email = models.EmailField('email address', unique=True)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -15,12 +16,6 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
-        # constraints = [
-        #     models.UniqueConstraint(
-        #         fields=['email'],
-        #         name='unique_username_email'
-        #     )
-        # ]
 
     def __str__(self):
         return self.email
