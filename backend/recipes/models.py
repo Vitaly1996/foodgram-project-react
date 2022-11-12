@@ -105,9 +105,49 @@ class IngredientRecipe(models.Model):
         verbose_name_plural = 'Ингредиенты в рецепте'
 
 
-class Follow(models.Model):
-    pass
+class ShoppingCart(models.Model):
+    user = models.ForeignKey(
+        User,
+        verbose_name='Пользователь',
+        on_delete=models.CASCADE,
+        related_name='user_shopcart'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        verbose_name='Рецепт',
+        on_delete=models.CASCADE,
+        related_name='recipe_shopcart'
+    )
+
+    class Meta:
+        verbose_name = 'Список покупок'
+        verbose_name_plural = 'Списки покупок'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'recipe'],
+                name='unique_shopping_cart'
+            ),
+        ]
 
 
-
-
+class Favourite(models.Model):
+    user = models.ForeignKey(
+        User,
+        verbose_name='Пользователь',
+        on_delete=models.CASCADE,
+        related_name='user_favourite'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        verbose_name='Рецепт',
+        on_delete=models.CASCADE,
+        related_name='recipe_favourite'
+    )
+    class Meta:
+        verbose_name = 'Избранное'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'recipe'],
+                name='unique_favourite'
+            ),
+        ]

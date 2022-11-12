@@ -96,6 +96,7 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
         'user': 'users.serializers.UserSerializer',
@@ -107,7 +108,7 @@ DJOSER = {
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -126,10 +127,8 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/recipes/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'recipes/media')
 
-MAX_LENGTH = 20
 
-
-REST_FRAMEWORK = {
-}
 AUTH_USER_MODEL = 'users.User'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
+
+MAX_LENGTH = 20

@@ -26,3 +26,4 @@ class RecipeAdmin(admin.ModelAdmin):
 class IngredientRecipeAdmin(admin.ModelAdmin):
     list_display = ('ingredient', 'amount',)
     empty_value_display = '-пусто-'
+
