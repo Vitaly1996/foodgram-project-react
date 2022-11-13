@@ -1,8 +1,8 @@
 from django.test import TestCase
-from recipes.models import *
-from rest_framework.test import APITestCase
 from django.urls import reverse
+from recipes.models import *
 from rest_framework import status
+from rest_framework.test import APITestCase
 
 
 class IngredientModelTest(TestCase):

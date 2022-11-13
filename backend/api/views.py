@@ -1,8 +1,10 @@
-from rest_framework import viewsets
-
-from api.serializers import *
-from recipes.models import *
 from api.pagination import CustomPagination
+from api.serializers import *
+from api.utils import add_to, delete_from
+from recipes.models import *
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework import permissions
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
@@ -25,10 +27,41 @@ class RecipeViewSet(viewsets.ModelViewSet):
     http_method_names = ('get', 'post', 'patch', 'delete')
     pagination_class = CustomPagination
 
+    def perform_create(self, serializer):
+        """Передает в поле author данные о пользователе. """
+        serializer.save(author=self.request.user)
+
     def get_serializer_class(self):
         """Переопределение выбора сериализатора"""
         if self.action in ('retrieve', 'list'):
             return RecipeReadSerializer
         return RecipeWriteSerializer
 
+    @action(
+        detail=True,
+        methods=['post', 'delete'],
+        url_path=r'(?P<recipe>\d+)/shopping_cart',
+        url_name='recipe_shopping_cart',
+        permission_classes=[permissions.IsAuthenticated]
+    )
+    def shopping_cart(self, request, pk):
+        """Метод для добавления/удаления из список покупок"""
+        if request.method == 'POST':
+            return add_to(ShoppingCart, request.user, pk)
+        else:
+            return delete_from(ShoppingCart, request.user, pk)
+        pass
 
+    @action(
+        detail=True,
+        methods=['post', 'delete'],
+        url_path=r'(?P<recipe>\d+)/favorite',
+        url_name='recipe_favorite',
+        permission_classes=[permissions.IsAuthenticated]
+    )
+    def favourite(self, request, pk):
+        """Метод для добавления/удаления из избранного"""
+        if request.method == 'POST':
+            return add_to(Favourite, request.user, pk)
+        else:
+            return delete_from(Favourite, request.user, pk)

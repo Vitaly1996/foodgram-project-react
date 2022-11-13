@@ -1,7 +1,6 @@
+from colorfield import fields
 from django.contrib.auth import get_user_model
 from django.db import models
-from colorfield import fields
-
 from foodgram.settings import MAX_LENGTH
 
 User = get_user_model()
@@ -110,13 +109,13 @@ class ShoppingCart(models.Model):
         User,
         verbose_name='Пользователь',
         on_delete=models.CASCADE,
-        related_name='user_shopcart'
+        related_name='user_shopping_cart'
     )
     recipe = models.ForeignKey(
         Recipe,
         verbose_name='Рецепт',
         on_delete=models.CASCADE,
-        related_name='recipe_shopcart'
+        related_name='recipe_shopping_cart'
     )
 
     class Meta:
@@ -143,6 +142,7 @@ class Favourite(models.Model):
         on_delete=models.CASCADE,
         related_name='recipe_favourite'
     )
+
     class Meta:
         verbose_name = 'Избранное'
         constraints = [

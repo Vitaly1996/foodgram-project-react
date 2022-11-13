@@ -1,9 +1,10 @@
 import base64
-from django.core.files.base import ContentFile
-from rest_framework import serializers
-from recipes.models import *
-from users.serializers import UserSerializer
+
 import webcolors
+from django.core.files.base import ContentFile
+from recipes.models import *
+from rest_framework import serializers
+from users.serializers import UserSerializer
 
 
 class Hex2NameColor(serializers.Field):
@@ -122,7 +123,6 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         )
         return super().update(instance=instance,
                               validated_data=validated_data)
-
 
     class Meta:
         model = Recipe
