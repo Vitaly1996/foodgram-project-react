@@ -2,9 +2,12 @@ from api.pagination import CustomPagination
 from api.serializers import *
 from api.utils import add_to, delete_from
 from recipes.models import *
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework import permissions
+from rest_framework.response import Response
+
+User = get_user_model()
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
@@ -50,7 +53,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return add_to(ShoppingCart, request.user, pk)
         else:
             return delete_from(ShoppingCart, request.user, pk)
-        pass
 
     @action(
         detail=True,

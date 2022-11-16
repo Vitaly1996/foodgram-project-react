@@ -1,11 +1,11 @@
-from recipes.models import Favourite, Recipe, ShoppingCart
+from recipes.models import Recipe
 from rest_framework import status
 from rest_framework.response import Response
 
 
 def add_to(self, request, model, user, pk):
     """Метод для добавления"""
-    if model.objects.filter(user=user, recipe__id=pk).exitst():
+    if model.objects.filter(user=user, recipe__id=pk).exist():
         return Response({'error': 'Рецепт уже добавлен'},
                          status=status.HTTP_400_BAD_REQUEST
         )
@@ -17,7 +17,7 @@ def add_to(self, request, model, user, pk):
 
 def delete_from(self, model, user, pk):
     """Метод для удаления"""
-    if model.objects.filter(user=user, recipe__id=pk).exists():
+    if model.objects.filter(user=user, recipe__id=pk).exist():
         model.objects.filter(
             user=user, recipe__id=pk
         ).delete()
