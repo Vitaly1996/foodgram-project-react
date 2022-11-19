@@ -1,10 +1,14 @@
+import io
+
+from django.http import FileResponse
+from django.shortcuts import get_object_or_404
 from recipes.models import Recipe
+from reportlab.pdfgen import canvas
 from rest_framework import status
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-import io
-from django.http import FileResponse
-from reportlab.pdfgen import canvas
+from foodgram import settings
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 
 def add_to(self, model, user, pk):
@@ -15,8 +19,8 @@ def add_to(self, model, user, pk):
         )
     recipe = get_object_or_404(Recipe, pk=pk)
     instance = model.objects.create(user=user, recipe=recipe)
-    serializer = self.get_serializer(instance)
-    return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+    # serializer = self.get_serializer(instance)
+    return Response(status=status.HTTP_201_CREATED)
 
 
 def delete_from(self, model, user, pk):
@@ -30,13 +34,22 @@ def delete_from(self, model, user, pk):
 
 
 def download_cart(list_ing):
+    SANS_REGULAR = settings.STATIC_ROOT + '/fonts/OpenSans-Regular.ttf'
+    SANS_REGULAR_NAME = 'OpenSans-Regular'
+    SANS_BOLD = settings.STATIC_ROOT + '/fonts/OpenSans-Bold.ttf'
+    SANS_BOLD_NAME = 'OpenSans-Bold'
+
+    pdfmetrics.registerFont(TTFont(SANS_REGULAR_NAME, SANS_REGULAR))
+    pdfmetrics.registerFont(TTFont(SANS_BOLD_NAME, SANS_BOLD))
+
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer)
-    c.setLineWidth(.3)
-    c.setFont('Helvetica', 20)
 
-    c.drawString(30, 750, 'Foodgram')
-    c.drawString(30, 735, 'Ваш продуктовый помошник')
+    c.setFont(SANS_BOLD_NAME, 32)
+    c.drawString(30, 775, 'Foodgram')
+
+    c.setFont(SANS_REGULAR_NAME, 20)
+    c.drawString(30, 740, 'Ваш продуктовый помошник')
     c.line(30, 730, 580, 730)
 
     c.drawString(30, 710, 'Список покупок')

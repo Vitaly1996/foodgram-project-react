@@ -1,10 +1,11 @@
 import base64
+
 import webcolors
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from recipes.models import *
-from users.models import Follow
 from rest_framework import serializers
+from users.models import Follow
 from users.serializers import UsersSerializer
 
 
@@ -272,7 +273,7 @@ class FollowSerializer(serializers.ModelSerializer):
         user = request.user
         author = data.get('author')
         if Follow.objects.filter(user=user, author=author):
-            raise serializers.ValidationError('Вы уже подписаны.')
+            raise serializers.ValidationError('Вы уже подписаны')
         if user == author:
             raise serializers.ValidationError('Вы не можете подписаться на себя')
         return data

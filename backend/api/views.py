@@ -1,17 +1,15 @@
+from api.filters import IngredientSearchFilter, RecipeFilter
 from api.pagination import CustomPagination
 from api.serializers import *
-from api.utils import add_to, delete_from
-from users.permissions import AuthorOrReadOnly
-from recipes.models import *
-from rest_framework import permissions, viewsets
-from rest_framework.decorators import action
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
-from api.filters import RecipeFilter, IngredientSearchFilter
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from api.utils import add_to, delete_from, download_cart
 from django.db.models import Sum
-from api.utils import download_cart
+from django_filters.rest_framework import DjangoFilterBackend
+from recipes.models import *
+from rest_framework import filters, permissions, viewsets
+from rest_framework.decorators import action
+from rest_framework.views import APIView
+from users.permissions import AuthorOrReadOnly
+
 User = get_user_model()
 
 
@@ -57,8 +55,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(
         detail=True,
         methods=['post', 'delete'],
-        # url_path=r'(?P<recipe>\d+)/shopping_cart',
-        # url_name='recipe_shopping_cart',
         permission_classes=[permissions.IsAuthenticated]
     )
     def shopping_cart(self, request, pk):
@@ -86,18 +82,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
     #     permission_classes=[permissions.IsAuthenticated]
     # )
     # def download_shopping_cart(self, request):
-    #     """Метод для скачивания списка покупок"""
-    #     self.buffer = io.BytesIO()
-    #     p = canvas.Canvas(self.buffer)
-    #     p.drawString(100, 100, "Hello world.")
-    #     p.showPage()
-    #     p.save()
-    #     self.buffer.seek(0)
-    #     return FileResponse(
-    #         self.buffer,
-    #         as_attachment=True,
-    #         filename='shoppcart_list.pdf'
-    #     )
+    #     """Метод для добавления/удаления из избранного"""
+    #     if request.method == 'POST':
+    #         return add_to(self, Favourite, request.user, pk)
+    #     else:
+    #         return delete_from(self, Favourite, request.user, pk)
 
 
 class DownloadCart(APIView):
@@ -111,9 +100,6 @@ class DownloadCart(APIView):
         ).annotate(summ_amount=Sum('recipe__ingredients__amount'))
         return download_cart(list_ing)
 
-#
-#     @classmethod
-#     def get_extra_actions(cls):
-#         return []
-# def DownloadCart(request):
-#     return Response('yoooy')
+    # @classmethod
+    # def get_extra_actions(cls):
+    #     return []
