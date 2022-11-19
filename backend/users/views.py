@@ -6,8 +6,8 @@ from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from users.models import Follow
-from users.serializers import (FollowListSerializer, FollowSerializer,
-                               UsersSerializer)
+from users.serializers import UsersSerializer
+from api.serializers import FollowSerializer, FollowListSerializer
 
 User = get_user_model()
 

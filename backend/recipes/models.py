@@ -28,7 +28,7 @@ class Tag(models.Model):
         verbose_name_plural = 'Теги'
 
     def __str__(self)-> str:
-        return self.name[:MAX_LENGTH]
+        return f'{self.name[:MAX_LENGTH]}'
 
 
 class Ingredient(models.Model):
@@ -46,7 +46,7 @@ class Ingredient(models.Model):
         verbose_name_plural = 'Ингредиенты'
 
     def __str__(self)-> str:
-        return self.name[:MAX_LENGTH]
+        return f'{self.name[:MAX_LENGTH]}'
 
 
 class Recipe(models.Model):
@@ -90,7 +90,7 @@ class Recipe(models.Model):
         verbose_name_plural = 'Рецепты'
 
     def __str__(self)-> str:
-        return self.name[:MAX_LENGTH]
+        return f'{self.name[:MAX_LENGTH]}'
 
 
 class IngredientRecipe(models.Model):
@@ -106,6 +106,9 @@ class IngredientRecipe(models.Model):
     class Meta:
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецепте'
+
+    def __str__(self)-> str:
+        return f'{self.ingredient}({self.amount})'
 
 
 class ShoppingCart(models.Model):
@@ -132,6 +135,9 @@ class ShoppingCart(models.Model):
             ),
         ]
 
+    def __str__(self)-> str:
+        return f'{self.user} добавил в список покупок {self.recipe}'
+
 
 class Favourite(models.Model):
     user = models.ForeignKey(
@@ -156,3 +162,6 @@ class Favourite(models.Model):
                 name='unique_favourite'
             ),
         ]
+
+        def __str__(self) -> str:
+            return f'{self.user} добавил в избранное {self.recipe}'

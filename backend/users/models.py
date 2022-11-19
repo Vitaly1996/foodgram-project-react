@@ -19,7 +19,7 @@ class User(AbstractUser):
         ]
 
     def __str__(self):
-        return {self.username}
+        return f'{self.username}'
 
 
 class Follow(models.Model):
@@ -46,5 +46,5 @@ class Follow(models.Model):
             ),
         ]
 
-    def __str__(self):
-        return f'{self.user} подписан на {self.author}'
+    def __str__(self) -> str:
+        return f"{self.user} подписан на {self.author}"
