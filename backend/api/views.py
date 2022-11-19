@@ -1,14 +1,24 @@
-from api.filters import IngredientSearchFilter, RecipeFilter
-from api.pagination import CustomPagination
-from api.serializers import *
-from api.utils import add_to, delete_from, download_cart
 from django.db.models import Sum
+from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
-from recipes.models import *
-from rest_framework import filters, permissions, viewsets
+from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.views import APIView
+
+from api.filters import IngredientFilter, RecipeFilter
+from api.pagination import CustomPagination
+from api.serializers import (IngredientSerializer,
+                             TagSerializer,
+                             RecipeReadSerializer,
+                             RecipeWriteSerializer,)
+from api.utils import add_to, delete_from, download_cart
+from recipes.models import (Tag,
+                            Ingredient,
+                            Recipe,
+                            ShoppingCart,
+                            Favourite,)
 from users.permissions import AuthorOrReadOnly
+
 
 User = get_user_model()
 
@@ -18,9 +28,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    # filter_backends = (filters.SearchFilter, DjangoFilterBackend, )
-    filter_class = IngredientSearchFilter
-    search_fields = ('^name',)
+    filter_class = IngredientFilter
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
@@ -96,10 +104,6 @@ class DownloadCart(APIView):
         list_ing = request.user.user_shopping_cart.values(
             'recipe__ingredients__ingredient__name',
             'recipe__ingredients__ingredient__measurement_unit'
-        ).order_by('recipe__ingredients__ingredient__name'
-        ).annotate(summ_amount=Sum('recipe__ingredients__amount'))
+        ).order_by('recipe__ingredients__ingredient__name').annotate(
+            summ_amount=Sum('recipe__ingredients__amount'))
         return download_cart(list_ing)
-
-    # @classmethod
-    # def get_extra_actions(cls):
-    #     return []

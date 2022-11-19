@@ -1,22 +1,13 @@
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '2)_zi3!44h=%ob3-m!^$z2(6gz39bw!jz8^)*=a1r6^ll(mk9i'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -28,11 +19,11 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
-    'django_filters',
     'djoser',
     'recipes.apps.RecipesConfig',
     'users.apps.UsersConfig',
     'api.apps.ApiConfig',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -91,7 +82,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS':
+        "rest_framework.pagination.LimitOffsetPagination",
     'PAGE_SIZE': 6,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 
@@ -123,10 +115,6 @@ DJOSER = {
     }
 }
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.2/topics/i18n/
-
 LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
@@ -137,9 +125,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = 'recipes/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'recipes/static')

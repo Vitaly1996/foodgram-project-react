@@ -1,12 +1,20 @@
 import base64
-
 import webcolors
+
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
-from recipes.models import *
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
+from recipes.models import (Tag,
+                            Ingredient,
+                            Recipe,
+                            ShoppingCart,
+                            IngredientRecipe)
 from users.models import Follow
 from users.serializers import UsersSerializer
+
+User = get_user_model()
 
 
 class Hex2NameColor(serializers.Field):
@@ -163,12 +171,8 @@ class RecipeShortInfo(RecipeReadSerializer):
         fields = ('id', 'name', 'image', 'cooking_time')
 
 
-class ShoppingCartSerSerializer(serializers.ModelSerializer):
-    "Сериализатор для списка покупок"
-
-    class Meta:
-        model = ShoppingCart
-        fields = ('user', 'recipe',)
+class AddToSerializer(serializers.Serializer):
+    "Сериализатор для добавления в спискок покупок/избранное"
 
     def to_representation(self, instance):
         request = self.context.get('request')
@@ -183,31 +187,7 @@ class ShoppingCartSerSerializer(serializers.ModelSerializer):
         recipe = data.get('recipe')
         if ShoppingCart.objects.filter(recipe=recipe, user=user):
             raise serializers.ValidationError(
-                'Вы уже добавили этот рецепт в список покупок'
-            )
-
-
-class Favourite(serializers.ModelSerializer):
-    "Сериализатор для списка покупок"
-
-    class Meta:
-        model = Favourite
-        fields = ('user', 'recipe')
-
-    def to_representation(self, instance):
-        request = self.context.get('request')
-        return RecipeShortInfo(
-            instance.recipe,
-            context={'request': request}
-        ).data
-
-    def validate(self, data):
-        request = self.context.get('request')
-        user = request.user
-        recipe = data.get('recipe')
-        if ShoppingCart.objects.filter(recipe=recipe, user=user):
-            raise serializers.ValidationError(
-                'Вы уже добавили этот рецепт в избранное'
+                'Вы уже добавили этот рецепт в список покупок/избранное'
             )
 
 
@@ -275,5 +255,7 @@ class FollowSerializer(serializers.ModelSerializer):
         if Follow.objects.filter(user=user, author=author):
             raise serializers.ValidationError('Вы уже подписаны')
         if user == author:
-            raise serializers.ValidationError('Вы не можете подписаться на себя')
+            raise serializers.ValidationError(
+                'Вы не можете подписаться на себя'
+            )
         return data

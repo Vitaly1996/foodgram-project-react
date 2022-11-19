@@ -1,6 +1,8 @@
 from colorfield import fields
+
 from django.contrib.auth import get_user_model
 from django.db import models
+
 from foodgram.settings import MAX_LENGTH
 
 User = get_user_model()
@@ -27,7 +29,7 @@ class Tag(models.Model):
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
-    def __str__(self)-> str:
+    def __str__(self) -> str:
         return f'{self.name[:MAX_LENGTH]}'
 
 
@@ -45,7 +47,7 @@ class Ingredient(models.Model):
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
-    def __str__(self)-> str:
+    def __str__(self) -> str:
         return f'{self.name[:MAX_LENGTH]}'
 
 
@@ -90,7 +92,7 @@ class Recipe(models.Model):
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
-    def __str__(self)-> str:
+    def __str__(self) -> str:
         return f'{self.name[:MAX_LENGTH]}'
 
 
@@ -108,7 +110,7 @@ class IngredientRecipe(models.Model):
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецепте'
 
-    def __str__(self)-> str:
+    def __str__(self) -> str:
         return f'{self.ingredient}({self.amount})'
 
 
@@ -136,7 +138,7 @@ class ShoppingCart(models.Model):
             ),
         ]
 
-    def __str__(self)-> str:
+    def __str__(self) -> str:
         return f'{self.user} добавил в список покупок {self.recipe}'
 
 

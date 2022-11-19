@@ -2,25 +2,27 @@ import io
 
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
-from recipes.models import Recipe
+
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import status
 from rest_framework.response import Response
+
 from foodgram import settings
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
+from recipes.models import Recipe
+from api.serializers import AddToSerializer
 
 
 def add_to(self, model, user, pk):
     """Метод для добавления"""
     if model.objects.filter(user=user, recipe__id=pk).exists():
-        return Response({'error': 'Рецепт уже добавлен'},
-                         status=status.HTTP_400_BAD_REQUEST
-        )
+        return Response({'error': 'Рецепт/Подписка уже добавлен(а)'},
+                        status=status.HTTP_400_BAD_REQUEST)
     recipe = get_object_or_404(Recipe, pk=pk)
     instance = model.objects.create(user=user, recipe=recipe)
-    # serializer = self.get_serializer(instance)
-    return Response(status=status.HTTP_201_CREATED)
+    serializer = AddToSerializer(instance)
+    return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
 
 def delete_from(self, model, user, pk):

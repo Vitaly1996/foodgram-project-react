@@ -1,7 +1,14 @@
-from api.views import *
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from users.views import *
+from django.contrib.auth import get_user_model
+
+from api.views import (IngredientViewSet,
+                       TagViewSet,
+                       RecipeViewSet,
+                       DownloadCart)
+from users.views import UsersViewSet
+
+User = get_user_model()
 
 router = DefaultRouter()
 
@@ -11,11 +18,6 @@ router.register('users', UsersViewSet, basename='users')
 router.register('ingredients', IngredientViewSet, basename='ingredients')
 router.register('tags', TagViewSet, basename='tags')
 router.register('recipes', RecipeViewSet, basename='recipes')
-# router.register(
-#     'recipes/download_shopping_cart/',
-#     DownloadCart,
-#     basename='download_cart'
-# )
 
 
 urlpatterns = [
