@@ -1,7 +1,7 @@
 from django.db.models import Sum
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.views import APIView
 
@@ -27,8 +27,9 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     """Вьюсет для модели Ingredient.Только читает данные. """
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    filter_backends = (DjangoFilterBackend, )
     pagination_class = None
-    filter_class = IngredientFilter
+    filterset_class = IngredientFilter
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
@@ -46,13 +47,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeReadSerializer
     http_method_names = ('get', 'post', 'patch', 'delete')
     filter_backends = (DjangoFilterBackend, )
-    filter_class = RecipeFilter
+    filterset_class = RecipeFilter
     pagination_class = CustomPagination
     permission_classes = (AuthorOrReadOnly, )
 
     def perform_create(self, serializer):
         """Передает в поле author данные о пользователе. """
         serializer.save(author=self.request.user)
+
+    def perform_destroy(self, instance):
+        """Удаляет объект класса рецепт"""
+        instance.delete()
 
     def get_serializer_class(self):
         """Переопределение выбора сериализатора"""
@@ -83,18 +88,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return add_to(self, Favourite, request.user, pk)
         else:
             return delete_from(self, Favourite, request.user, pk)
-
-    # @action(
-    #     detail=True,
-    #     methods=['get'],
-    #     permission_classes=[permissions.IsAuthenticated]
-    # )
-    # def download_shopping_cart(self, request):
-    #     """Метод для добавления/удаления из избранного"""
-    #     if request.method == 'POST':
-    #         return add_to(self, Favourite, request.user, pk)
-    #     else:
-    #         return delete_from(self, Favourite, request.user, pk)
 
 
 class DownloadCart(APIView):
