@@ -1,5 +1,11 @@
 from django.contrib import admin
-from recipes.models import *
+from recipes.models import (Ingredient,
+                            Tag,
+                            Recipe,
+                            IngredientRecipe,
+                            ShoppingCart,
+                            Favourite)
+from users.models import Follow, User
 
 
 @admin.register(Ingredient)
@@ -19,10 +25,14 @@ class TagAdmin(admin.ModelAdmin):
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('name', 'text', 'image', 'cooking_time', 'author',)
     list_filter = ('author', 'tags',)
-    empty_value_display = '-пусто-'
 
 
 @admin.register(IngredientRecipe)
 class IngredientRecipeAdmin(admin.ModelAdmin):
     list_display = ('ingredient', 'amount',)
-    empty_value_display = '-пусто-'
+
+
+admin.site.register(ShoppingCart)
+admin.site.register(Follow)
+admin.site.register(Favourite)
+admin.site.register(User)

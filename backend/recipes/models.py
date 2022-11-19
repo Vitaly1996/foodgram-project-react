@@ -1,6 +1,7 @@
+from colorfield import fields
+
 from django.contrib.auth import get_user_model
 from django.db import models
-from colorfield import fields
 
 from foodgram.settings import MAX_LENGTH
 
@@ -28,8 +29,8 @@ class Tag(models.Model):
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
-    def __str__(self)-> str:
-        return self.name[:MAX_LENGTH]
+    def __str__(self) -> str:
+        return f'{self.name[:MAX_LENGTH]}'
 
 
 class Ingredient(models.Model):
@@ -46,8 +47,8 @@ class Ingredient(models.Model):
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
-    def __str__(self)-> str:
-        return self.name[:MAX_LENGTH]
+    def __str__(self) -> str:
+        return f'{self.name[:MAX_LENGTH]}'
 
 
 class Recipe(models.Model):
@@ -81,13 +82,18 @@ class Recipe(models.Model):
         "IngredientRecipe",
         verbose_name='Ингредиенты'
     )
+    pub_date = models.DateTimeField(
+        verbose_name='Дата публикации',
+        auto_now_add=True
+    )
 
     class Meta:
+        ordering = ['-pub_date']
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
-    def __str__(self)-> str:
-        return self.name[:MAX_LENGTH]
+    def __str__(self) -> str:
+        return f'{self.name[:MAX_LENGTH]}'
 
 
 class IngredientRecipe(models.Model):
@@ -104,10 +110,61 @@ class IngredientRecipe(models.Model):
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецепте'
 
-
-class Follow(models.Model):
-    pass
-
+    def __str__(self) -> str:
+        return f'{self.ingredient}({self.amount})'
 
 
+class ShoppingCart(models.Model):
+    user = models.ForeignKey(
+        User,
+        verbose_name='Пользователь',
+        on_delete=models.CASCADE,
+        related_name='user_shopping_cart'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        verbose_name='Рецепт',
+        on_delete=models.CASCADE,
+        related_name='recipe_shopping_cart'
+    )
 
+    class Meta:
+        verbose_name = 'Список покупок'
+        verbose_name_plural = 'Списки покупок'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'recipe'],
+                name='unique_shopping_cart'
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f'{self.user} добавил в список покупок {self.recipe}'
+
+
+class Favourite(models.Model):
+    user = models.ForeignKey(
+        User,
+        verbose_name='Пользователь',
+        on_delete=models.CASCADE,
+        related_name='user_favourite'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        verbose_name='Рецепт',
+        on_delete=models.CASCADE,
+        related_name='recipe_favourite'
+    )
+
+    class Meta:
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранное'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'recipe'],
+                name='unique_favourite'
+            ),
+        ]
+
+        def __str__(self) -> str:
+            return f'{self.user} добавил в избранное {self.recipe}'
