@@ -67,9 +67,9 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             sudo docker-compose stop
-            sudo docker-compose rm web frontend
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.BACKEND }}:latest
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.FRONTEND }}:latest
+            sudo docker-compose rm web 
+            sudo docker pull vitalysergeev/foodgram_backend:latest
+            sudo docker pull vitalysergeev/foodgram_frontend:latest
             rm .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
@@ -78,11 +78,7 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            sudo docker-compose up -d
-            sudo docker-compose exec -T web python manage.py makemigrations users
-            sudo docker-compose exec -T web python manage.py migrate
-            sudo docker-compose exec -T web python manage.py collectstatic --no-input
-            sudo docker-compose exec -T web python manage.py createsuperuser --username ${{ secrets.DJANGO_ADMIN }} --password ${{ secrets.DJANGO_PASSWORD }}
+            sudo docker-compose up -d}
 
   send_message:
     runs-on: ubuntu-latest
