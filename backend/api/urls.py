@@ -1,11 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from django.contrib.auth import get_user_model
 
-from api.views import (IngredientViewSet,
-                       TagViewSet,
-                       RecipeViewSet,
-                       DownloadCart)
+from api.views import (DownloadCart, IngredientViewSet, RecipeViewSet,
+                       TagViewSet)
 from users.views import UsersViewSet
 
 User = get_user_model()
