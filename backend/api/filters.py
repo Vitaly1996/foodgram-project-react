@@ -8,11 +8,8 @@ class RecipeFilter(rest_framework.FilterSet):
     is_favorited = django_filters.NumberFilter(
         method='get_is_favorited'
     )
-    tags = django_filters.ModelMultipleChoiceFilter(
-        queryset=Tag.objects.all(),
+    tags = django_filters.AllValuesMultipleFilter(
         field_name='tags__slug',
-        to_field_name='name'
-
     )
     is_in_shopping_cart = django_filters.NumberFilter(
         method='get_is_shopping_cart'
