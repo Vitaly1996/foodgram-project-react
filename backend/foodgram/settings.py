@@ -111,7 +111,7 @@ DJOSER = {
         'current_user': 'users.serializers.UserSerializer',
     },
     'PERMISSIONS': {
-        'activation': ['rest_framework.permissions.IsAdminUser'],
+        'activation': ['rest_framework.permissions.AllowAny'],
         'password_reset': ['rest_framework.permissions.IsAdminUser'],
         'password_reset_confirm': ['rest_framework.permissions.IsAdminUser'],
         'set_password': ['rest_framework.permissions.IsAuthenticated'],
