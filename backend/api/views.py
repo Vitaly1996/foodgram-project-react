@@ -1,7 +1,7 @@
 from django.db.models import Sum
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import permissions, viewsets, filters
+from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.views import APIView
 

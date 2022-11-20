@@ -14,7 +14,7 @@ class Command(BaseCommand):
         path = os.path.join(DATA_PATH, INGREDIENT_JSON)
         Ingredient.objects.all().delete()
 
-        with open(path, 'r',  encoding='utf-8') as file:
+        with open(path, 'r', encoding='utf-8') as file:
             reader = json.load(file)
             Ingredient.objects.bulk_create([
                 Ingredient(**x) for x in reader

@@ -56,9 +56,9 @@ class UsersViewSet(UserViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(
-                    serializer.data,
-                    status=status.HTTP_201_CREATED
-                )
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
         subscribe = get_object_or_404(
             Follow,
             user=user,
