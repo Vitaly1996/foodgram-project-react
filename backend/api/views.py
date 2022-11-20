@@ -1,5 +1,5 @@
-from django.db.models import Sum
 from django.contrib.auth import get_user_model
+from django.db.models import Sum
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
@@ -7,18 +7,11 @@ from rest_framework.views import APIView
 
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
-from api.serializers import (IngredientSerializer,
-                             TagSerializer,
-                             RecipeReadSerializer,
-                             RecipeWriteSerializer,)
+from api.serializers import (IngredientSerializer, RecipeReadSerializer,
+                             RecipeWriteSerializer, TagSerializer)
 from api.utils import add_to, delete_from, download_cart
-from recipes.models import (Tag,
-                            Ingredient,
-                            Recipe,
-                            ShoppingCart,
-                            Favourite,)
+from recipes.models import Favourite, Ingredient, Recipe, ShoppingCart, Tag
 from users.permissions import AuthorOrReadOnly
-
 
 User = get_user_model()
 
