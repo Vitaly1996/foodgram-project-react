@@ -100,10 +100,12 @@ class IngredientRecipe(models.Model):
     ingredient = models.ForeignKey(
         Ingredient,
         verbose_name='Ингредиенты',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True
     )
     amount = models.IntegerField(
-        verbose_name='Количество ингредиента'
+        verbose_name='Количество ингредиента',
+        null=True
     )
 
     class Meta:
