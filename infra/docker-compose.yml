@@ -9,7 +9,7 @@ services:
       - ./.env
 
   web:
-    image: vitalysergeev/foodgram_backend
+    image: vitalysergeev/foodgram_backend:latest
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
@@ -19,7 +19,7 @@ services:
       - ./.env
 
   frontend:
-    image: vitalysergeev/foodgram_frontend
+    image: vitalysergeev/foodgram_frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
