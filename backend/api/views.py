@@ -84,6 +84,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 
 class DownloadCart(APIView):
+    """Вью для скачивания списка покупок. """
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
