@@ -77,8 +77,6 @@ DATABASES = {
     }
 }
 
-
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -98,8 +96,6 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    'ACTIVATION_URL': '#/activate/{uid}/{token}',
-    'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
         'user_list': 'api.serializers.UserSerializer',
         'user': 'users.serializers.UserSerializer',
