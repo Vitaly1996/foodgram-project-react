@@ -136,7 +136,7 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
     def create_ingredients(self, ingredients, recipe):
         for ingredient in ingredients:
             current_ingredient = get_object_or_404(
-                Ingredient.objects.filter(id=ingredient.get('id'))
+                Ingredient, id=ingredient.get('id')
             )
             ing, _ = IngredientRecipe.objects.get_or_create(
                 ingredient=current_ingredient,
@@ -165,6 +165,27 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
             instance=recipe,
             validated_data=validated_data
         )
+
+    def validate_ingredients(self, data):
+        ingredients = self.initial_data.get('ingredients')
+        list = []
+        for ing in ingredients:
+            ing_id = ing.get('id')
+            if ing_id in list:
+                raise serializers.ValidationError(
+                    'Сударь/cударыня, ингредиенты не должны повторяться!'
+                )
+            list.append(ing_id)
+        return data
+
+    def validate_time(self, data):
+        time = data['cooking_time']
+        if time <= 0:
+            raise serializers.ValidationError(
+                'Сударь/cударыня, '
+                'время приготовления не может быть 0 и отрицательным, увы!'
+            )
+        return data
 
 
 class RecipeShortInfo(RecipeReadSerializer):

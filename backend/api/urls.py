@@ -22,4 +22,5 @@ urlpatterns = [
     path('recipes/download_shopping_cart/', DownloadCart.as_view()),
     path('', include(router.urls)),
     path('auth/', include('djoser.urls.authtoken')),
+    path('', include('djoser.urls'))
 ]
