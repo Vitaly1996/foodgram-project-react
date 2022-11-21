@@ -18,3 +18,4 @@ python-dotenv==0.19.2
 sorl-thumbnail==12.9.0
 sqlparse==0.3.1
 webcolors==1.12
+django-colorfield==0.7.2
