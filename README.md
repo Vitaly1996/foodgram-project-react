@@ -8,7 +8,6 @@
 - Python 3.7
 - Django 3.2.16
 - Django Rest Framework 3.12.14
-- Simple-JWT 5.2.0
 - Docker 20.10.18
 - Djoser==2.1.0
 - Yandex Cloud
