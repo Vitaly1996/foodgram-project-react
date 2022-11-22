@@ -166,26 +166,24 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
             validated_data=validated_data
         )
 
-    def validate_ingredients(self, data):
-        ingredients = self.initial_data.get('ingredients')
+    def validate_ingredients(self, value):
         list = []
-        for ing in ingredients:
-            ing_id = ing.get('id')
+        for ing in value:
+            ing_id = dict(ing).get('id')
             if ing_id in list:
                 raise serializers.ValidationError(
                     'Сударь/cударыня, ингредиенты не должны повторяться!'
                 )
             list.append(ing_id)
-        return data
+        return value
 
-    def validate_time(self, data):
-        time = data['cooking_time']
-        if time <= 0:
+    def validate_cooking_time(self, value):
+        if value == 0:
             raise serializers.ValidationError(
                 'Сударь/cударыня, '
-                'время приготовления не может быть 0 и отрицательным, увы!'
+                'время приготовления не может быть равно 0!'
             )
-        return data
+        return value
 
 
 class RecipeShortInfo(RecipeReadSerializer):
