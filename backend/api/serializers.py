@@ -181,7 +181,7 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         if value == 0:
             raise serializers.ValidationError(
                 'Сударь/cударыня, '
-                'время приготовления не может быть равно 0!'
+                'время приготовления не может быть 0 и отрицательным, увы!'
             )
         return value
 
