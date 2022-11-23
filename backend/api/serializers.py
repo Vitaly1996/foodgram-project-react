@@ -109,10 +109,11 @@ class IngredientRecipeWriteSerializer(serializers.Serializer):
     amount = serializers.IntegerField(required=True)
 
     def validate_amount(self, value):
-        if value < 1:
+        if value <=0:
             raise serializers.ValidationError(
-                'Количесто ингредиента не может быть меньше 1'
+                'Количесто ингредиента не может быть меньше <=0'
             )
+        return value
 
 
 class RecipeWriteSerializer(serializers.ModelSerializer):
@@ -175,6 +176,10 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
                     'Сударь/cударыня, ингредиенты не должны повторяться!'
                 )
             list.append(ing_id)
+        if not list:
+            raise serializers.ValidationError(
+                'В рецепте должны быть ингредиенты'
+            )
         return value
 
     def validate_cooking_time(self, value):
@@ -183,6 +188,16 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
                 'Сударь/cударыня, '
                 'время приготовления не может быть 0 и отрицательным, увы!'
             )
+        return value
+
+    def validate_tags(self, value):
+        list = []
+        for tag in value:
+            if tag in list:
+                raise serializers.ValidationError(
+                    'Сударь/cударыня, теги не должны повторяться!'
+                )
+            list.append(tag)
         return value
 
 
